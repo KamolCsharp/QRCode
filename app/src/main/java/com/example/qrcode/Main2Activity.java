@@ -62,7 +62,7 @@ public class Main2Activity extends AppCompatActivity implements ZXingScannerView
     @Override
     public void onResume() {
         super.onResume();
-        
+
         scannerView.setResultHandler(this);
         scannerView.startCamera();
     }
