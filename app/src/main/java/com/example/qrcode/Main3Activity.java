@@ -7,7 +7,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -33,19 +32,17 @@ public class Main3Activity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case MY_CAMERA_REQUEST_CODE: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    try {
-                        cameraSource.start(cameraView.getHolder());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
+                try {
+                    cameraSource.start(cameraView.getHolder());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
@@ -63,7 +60,7 @@ public class Main3Activity extends AppCompatActivity {
 
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!textRecognizer.isOperational()) {
-            Log.w("MainActivity", "Detector dependencies are not yet avilable");
+            Log.w("MainActivity", "Detector dependencies are not yet available");
         } else {
             cameraSource = new CameraSource.Builder(getApplicationContext(), textRecognizer)
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
@@ -117,9 +114,6 @@ public class Main3Activity extends AppCompatActivity {
                                 if (IsNumeric(stringBuilder.toString())) {
                                     MainActivity.tv.setText(stringBuilder.toString());
                                     onBackPressed();
-                                } else {
-//                                    MainActivity.tv.setText(stringBuilder.toString());
-//                                    onBackPressed();
                                 }
                             }
                         });
